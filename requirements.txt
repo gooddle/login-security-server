@@ -8,6 +8,7 @@ bcrypt==4.2.0
 resend==2.4.0
 python-multipart==0.0.12
 email-validator==2.2.0
+strawberry-graphql[fastapi]==0.262.0
 
 # dev
 pytest==8.3.0

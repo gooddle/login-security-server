@@ -3,8 +3,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.core.database import Base, get_db
-from app.main import app
+from app.core.database import Base
+from app.main import app, get_context
 
 TEST_DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -27,15 +27,20 @@ def db():
         session.close()
 
 
+class MockClient:
+    host = "127.0.0.1"
+
+
+class MockRequest:
+    client = MockClient()
+
+
 @pytest.fixture
 def client(db):
-    def override_get_db():
-        try:
-            yield db
-        finally:
-            pass
+    async def override_context(request=None):
+        yield {"db": db, "request": MockRequest()}
 
-    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_context] = override_context
     with TestClient(app) as c:
         yield c
     app.dependency_overrides.clear()
