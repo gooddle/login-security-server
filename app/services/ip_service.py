@@ -4,10 +4,12 @@ from app.models.user import KnownIP
 
 
 def is_known_ip(db: Session, user_id: int, ip_address: str) -> bool:
-    return db.query(KnownIP).filter(
-        KnownIP.user_id == user_id,
-        KnownIP.ip_address == ip_address
-    ).first() is not None
+    return (
+        db.query(KnownIP)
+        .filter(KnownIP.user_id == user_id, KnownIP.ip_address == ip_address)
+        .first()
+        is not None
+    )
 
 
 def register_ip(db: Session, user_id: int, ip_address: str) -> KnownIP:

@@ -1,0 +1,5 @@
+[allowlist]
+description = "개발용 더미값 허용"
+regexes = [
+  "dev-secret-key",
+]

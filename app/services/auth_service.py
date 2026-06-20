@@ -2,8 +2,8 @@ import bcrypt
 from sqlalchemy.orm import Session
 
 from app.models.user import User
-from app.services.ip_service import is_known_ip, register_ip
 from app.services.email_service import send_new_ip_alert
+from app.services.ip_service import is_known_ip, register_ip
 
 
 def get_user_by_email(db: Session, email: str) -> User | None:
@@ -28,11 +28,11 @@ def create_user(db: Session, email: str, password: str) -> User:
 
 def authenticate_user(db: Session, email: str, password: str, ip_address: str) -> User | None:
     user = get_user_by_email(db, email)
-    if not user or not verify_password(password, user.hashed_password):
+    if not user or not verify_password(password, str(user.hashed_password)):
         return None
 
-    if not is_known_ip(db, user.id, ip_address):
-        send_new_ip_alert(user.email, ip_address)
-        register_ip(db, user.id, ip_address)
+    if not is_known_ip(db, int(user.id), ip_address):
+        send_new_ip_alert(str(user.email), ip_address)
+        register_ip(db, int(user.id), ip_address)
 
     return user

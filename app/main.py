@@ -1,16 +1,19 @@
+from collections.abc import AsyncGenerator
+from typing import Any
+
 import strawberry
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
-from app.core.database import Base, engine, SessionLocal
+from app.core.database import Base, SessionLocal, engine
 from app.graphql.mutations import Mutation
 from app.graphql.types import Query
 
 Base.metadata.create_all(bind=engine)
 
 
-async def get_context(request: Request):
+async def get_context(request: Request) -> AsyncGenerator[dict[str, Any], None]:
     db = SessionLocal()
     try:
         yield {"db": db, "request": request}

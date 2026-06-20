@@ -9,8 +9,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - run: pip install -r requirements.txt
-      - run: pytest --cov=app
+
+      - name: ruff lint
+        run: ruff check app
+
+      - name: ruff format
+        run: ruff format --check app
+
+      - name: mypy
+        run: mypy app
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pytest
+        run: pytest --cov=app
