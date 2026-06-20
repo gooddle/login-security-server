@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd ~/Desktop/private/login-security-server && .venv/bin/pytest -x -q 2>&1 | tail -10"
+            "command": ".venv/bin/pytest -x -q 2>&1 | tail -10"
           }
         ]
       }
