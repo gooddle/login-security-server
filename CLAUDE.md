@@ -25,6 +25,11 @@ FastAPI 기반 보안 감사 로그 시스템. 새로운 IP에서 로그인 시 
 - 리팩토링 (REFACTOR)
 - 테스트 없는 코드는 머지 금지
 
+## 문서화 규칙
+- 기능 추가/변경 시 `docs/YYYY-MM-DD.md` 파일에 항상 기록
+- 파일이 없으면 오늘 날짜로 새로 생성
+- 형식: `## feat|fix|refactor: 기능명` + 변경 내용 bullet
+
 ## 환경 변수 (.env)
 - `DATABASE_URL` - SQLite DB 경로
 - `SECRET_KEY` - JWT 서명 키
