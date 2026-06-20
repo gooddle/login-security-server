@@ -1,5 +1,5 @@
 import strawberry
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from strawberry.fastapi import GraphQLRouter
 
 from app.core.database import Base, engine, SessionLocal
@@ -9,7 +9,7 @@ from app.graphql.types import Query
 Base.metadata.create_all(bind=engine)
 
 
-async def get_context(request=None):
+async def get_context(request: Request):
     db = SessionLocal()
     try:
         yield {"db": db, "request": request}

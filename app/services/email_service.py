@@ -4,6 +4,9 @@ from app.core.config import settings
 
 
 def send_new_ip_alert(to_email: str, ip_address: str) -> None:
+    if not settings.resend_api_key:
+        return
+
     resend.api_key = settings.resend_api_key
 
     resend.Emails.send({
