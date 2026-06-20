@@ -1,5 +1,6 @@
 import strawberry
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
 from app.core.database import Base, engine, SessionLocal
@@ -21,4 +22,10 @@ schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_router = GraphQLRouter(schema, context_getter=get_context)
 
 app = FastAPI(title="Login Security Server")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(graphql_router, prefix="/graphql")
